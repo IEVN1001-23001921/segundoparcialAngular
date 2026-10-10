@@ -27,7 +27,9 @@ export const routes: Routes = [
                     import('./formularios/zodiaco/zodiaco').then(
                         (c)=>c.Zodiaco
                     )
-            }
+            },
+
+            
         ]
     },
     {
