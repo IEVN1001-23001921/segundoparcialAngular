@@ -1,3 +1,6 @@
+<br>
+<br>
+<br>
 
 <div class="max-w-5xl mx-auto my-10 p-6 bg-white border border-gray-300 shadow-md rounded-lg">
 
@@ -25,7 +28,7 @@
             class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2">
         </div>
 
-        <!-- Apaterno -->
+        <!-- Apellido paterno -->
         <div class="flex items-center gap-2">
           <label class="w-24 text-sm font-semibold text-gray-700">
             Apaterno
@@ -38,7 +41,7 @@
             class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2">
         </div>
 
-        <!-- Amaterno -->
+        <!-- Apellido materno -->
         <div class="flex items-center gap-2">
           <label class="w-24 text-sm font-semibold text-gray-700">
             Amaterno
@@ -51,7 +54,7 @@
             class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2">
         </div>
 
-        <!-- Fecha -->
+        <!-- Fecha de nacimiento -->
         <div class="pt-2">
 
           <p class="text-center font-semibold text-gray-800 text-sm mb-1">
@@ -68,6 +71,8 @@
               <input
                 type="number"
                 formControlName="dia"
+                min="1"
+                max="31"
                 class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2 text-center">
             </div>
 
@@ -79,6 +84,8 @@
               <input
                 type="number"
                 formControlName="mes"
+                min="1"
+                max="12"
                 class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2 text-center">
             </div>
 
@@ -89,7 +96,8 @@
 
               <input
                 type="number"
-                formControlName="año"
+                formControlName="anio"
+                min="1"
                 class="bg-gray-50 border border-gray-400 text-gray-900 text-sm rounded-lg block w-full p-2 text-center">
             </div>
 
@@ -134,16 +142,23 @@
           </div>
         </div>
 
-        <!-- Botón -->
-        <div class="pt-4">
+        <!-- Botones -->
+        <div class="pt-4 space-y-3">
 
           <button
             type="submit"
             class="w-full text-black bg-white border-4 border-black hover:bg-gray-100 font-bold rounded-lg text-lg px-5 py-2.5 shadow">
-
-            Imprimir
-
+           Imprimir
           </button>
+
+          <button
+          type="button"
+          (click)="irARegistros()"
+          class="w-full text-black bg-white border-4 border-black hover:bg-gray-100 font-bold rounded-lg text-lg px-5 py-2.5 shadow">
+           Ver Registros
+          </button>
+
+          
 
         </div>
 
@@ -159,24 +174,27 @@
         <div class="text-center space-y-6">
 
           <h1 class="text-2xl font-normal text-gray-900">
-
             Hola
             <span class="font-bold italic">
               {{ zodiaco.nombre }}
               {{ zodiaco.Apaterno }}
               {{ zodiaco.Amaterno }}
             </span>
-
           </h1>
 
           <p class="text-xl text-gray-800">
-
             Tienes
             <span class="font-bold">
               {{ zodiaco.edad }}
             </span>
             años
-
+          </p>
+           <p class="text-xl text-gray-800">
+            Tu sexo es 
+            <span class="font-bold">
+              {{ zodiaco.sexo }}
+            </span>
+          
           </p>
 
           <div class="space-y-4">
@@ -213,4 +231,3 @@
   </div>
 
 </div>
-

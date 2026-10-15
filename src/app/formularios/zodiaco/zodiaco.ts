@@ -1,7 +1,8 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 interface IZodiaco {
   nombre: string;
@@ -9,7 +10,7 @@ interface IZodiaco {
   Amaterno: string;
   dia: string;
   mes: string;
-  año: string;
+  anio: string;
   edad: string;
   signo: string;
   sexo: string;
@@ -18,14 +19,22 @@ interface IZodiaco {
 
 @Component({
   selector: 'app-zodiaco',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './zodiaco.html',
-  styleUrl: './zodiaco.css'
+  styleUrls: ['./zodiaco.css']
 })
+export class Zodiaco {
 
-export class Zodiaco implements OnInit {
-
-  formulario!: FormGroup;
+  formulario = new FormGroup({
+    nombre: new FormControl(''),
+    Apaterno: new FormControl(''),
+    Amaterno: new FormControl(''),
+    dia: new FormControl(''),
+    mes: new FormControl(''),
+    anio: new FormControl(''),
+    sexo: new FormControl('')
+  });
 
   zodiaco: IZodiaco = {
     nombre: '',
@@ -33,134 +42,161 @@ export class Zodiaco implements OnInit {
     Amaterno: '',
     dia: '',
     mes: '',
-    año: '',
+    anio: '',
     edad: '',
     signo: '',
     sexo: '',
     imagensigno: ''
   };
 
+  zodiacos: IZodiaco[] = [];
   mostrar = false;
 
-  ngOnInit(): void {
-
-    this.formulario = new FormGroup({
-
-      nombre: new FormControl(''),
-      Apaterno: new FormControl(''),
-      Amaterno: new FormControl(''),
-
-      dia: new FormControl(''),
-      mes: new FormControl(''),
-      año: new FormControl(''),
-
-      sexo: new FormControl('')
-
-    });
-
-  }
+  constructor(private router: Router) {}
 
   muestraZodiaco(): void {
+    const datos = this.formulario.value;
 
-    this.zodiaco.nombre = this.formulario.value.nombre;
-    this.zodiaco.Apaterno = this.formulario.value.Apaterno;
-    this.zodiaco.Amaterno = this.formulario.value.Amaterno;
+    const nombre = (datos.nombre || '');
+    const Apaterno = (datos.Apaterno || '');
+    const Amaterno = (datos.Amaterno || '');
+    const diaTexto = datos.dia || '';
+    const mesTexto = datos.mes || '';
+    const anioTexto = datos.anio || '';
+    const sexo = datos.sexo || '';
 
-    this.zodiaco.dia = this.formulario.value.dia;
-    this.zodiaco.mes = this.formulario.value.mes;
-    this.zodiaco.año = this.formulario.value.año;
+    const dia = parseInt(diaTexto);
+    const mes = parseInt(mesTexto);
+    const anio = parseInt(anioTexto);
 
-    this.zodiaco.sexo = this.formulario.value.sexo;
-
-    let año = parseInt(this.zodiaco.año);
-    let mes = parseInt(this.zodiaco.mes);
-    let dia = parseInt(this.zodiaco.dia);
-
-    let fecha = new Date();
-    let edad = fecha.getFullYear() - año;
-
-  if (mes > fecha.getMonth() + 1 || (mes == fecha.getMonth() + 1 && dia > fecha.getDate())) {
-  edad = edad - 1;
-}
-
-this.zodiaco.edad = edad.toString();
-
-    switch (año % 12) {
-
-      case 0:
-        this.zodiaco.signo = 'Mono';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Mono.jpg';
-        break;
-
-      case 1:
-        this.zodiaco.signo = 'Gallo';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Gallo.jpg';
-        break;
-
-      case 2:
-        this.zodiaco.signo = 'Perro';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Perro.jpg';
-        break;
-
-      case 3:
-        this.zodiaco.signo = 'Cerdo';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Cerdo.jpg';
-        break;
-
-      case 4:
-        this.zodiaco.signo = 'Rata';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Rata.jpg';
-        break;
-
-      case 5:
-        this.zodiaco.signo = 'Buey';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Buey.jpg';
-        break;
-
-      case 6:
-        this.zodiaco.signo = 'Tigre';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Tigre.jpg';
-        break;
-
-      case 7:
-        this.zodiaco.signo = 'Conejo';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Conejo.jpg';
-        break;
-
-      case 8:
-        this.zodiaco.signo = 'Dragón';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Dragon.jpg';
-        break;
-
-      case 9:
-        this.zodiaco.signo = 'Serpiente';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Serpiente.jpg';
-        break;
-
-      case 10:
-        this.zodiaco.signo = 'Caballo';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Caballo.jpg';
-        break;
-
-      case 11:
-        this.zodiaco.signo = 'Cabra';
-        this.zodiaco.imagensigno =
-          'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Cabra.jpg';
-        break;
+    if (!nombre || !Apaterno || !Amaterno || !sexo ||
+        !diaTexto || !mesTexto || !anioTexto) {
+      alert('Completa todos los campos.');
+      return;
     }
 
-    this.mostrar = true;
-  }
+    const fecha = new Date(anio, mes - 1, dia);
+    const hoy = new Date();
+
+    if (
+      dia < 1 || dia > 31 ||
+      mes < 1 || mes > 12 ||
+      anio < 1 ||
+      fecha.getDate() !== dia ||
+      fecha.getMonth() !== mes - 1 ||
+      fecha.getFullYear() !== anio ||
+      fecha > hoy
+    ) {
+      alert('Ingresa una fecha de nacimiento válida.');
+      return;
+    }
+
+    let edad = hoy.getFullYear() - anio;
+
+    if (
+      hoy.getMonth() < mes - 1 ||
+      (hoy.getMonth() === mes - 1 && hoy.getDate() < dia)
+    ) {
+      edad--;
+    }
+
+    let signo = '';
+    let imagensigno = '';
+
+    
+
+switch (anio % 12) {
+  case 0:
+    signo = 'Mono';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Mono.jpg';
+    break;
+
+  case 1:
+    signo = 'Gallo';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Gallo.jpg';
+    break;
+
+  case 2:
+    signo = 'Perro';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Perro.jpg';
+    break;
+
+  case 3:
+    signo = 'Cerdo';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Cerdo.jpg';
+    break;
+
+  case 4:
+    signo = 'Rata';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Rata.jpg';
+    break;
+
+  case 5:
+    signo = 'Buey';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Buey.jpg';
+    break;
+
+  case 6:
+    signo = 'Tigre';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Tigre.jpg';
+    break;
+
+  case 7:
+    signo = 'Conejo';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Conejo.jpg';
+    break;
+
+  case 8:
+    signo = 'Dragon';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Dragon.jpg';
+    break;
+
+  case 9:
+    signo = 'Serpiente';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Serpiente.jpg';
+    break;
+
+  case 10:
+    signo = 'Caballo';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Caballo.jpg';
+    break;
+
+  case 11:
+    signo = 'Cabra';
+    imagensigno = 'https://confuciomag.com/wp-content/uploads/2016/01/06_horoscopo_chino_Cabra.jpg';
+    break;
 }
 
+
+
+    this.zodiaco = {
+      nombre,
+      Apaterno,
+      Amaterno,
+      dia: diaTexto,
+      mes: mesTexto,
+      anio: anioTexto,
+      edad: edad.toString(),
+      signo,
+      sexo,
+      imagensigno
+    };
+
+    this.cargarZodiaco();
+    this.zodiacos.push({ ...this.zodiaco });
+
+    localStorage.setItem('zodiacos', JSON.stringify(this.zodiacos));
+
+    this.mostrar = true;
+    this.formulario.reset();
+  }
+
+  cargarZodiaco(): void {
+    const datos = localStorage.getItem('zodiacos');
+    this.zodiacos = datos ? JSON.parse(datos) : [];
+  }
+
+  irARegistros(): void {
+    this.router.navigate(['/formularios/registros']);
+  }
+}

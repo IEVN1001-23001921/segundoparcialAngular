@@ -1,0 +1,206 @@
+<div class="max-w-6xl mx-auto my-10 p-6 bg-white border border-gray-300 shadow-md rounded-lg">
+
+  <h1 class="text-3xl font-bold text-gray-900 mb-6">
+    Registros del Zodiaco Chino
+  </h1>
+
+  <!-- FORMULARIO DE EDICIÓN -->
+  <div *ngIf="editando" class="mb-8 p-6 border border-gray-300 rounded-lg bg-gray-50">
+
+    <h2 class="text-xl font-bold text-gray-800 mb-4">
+      Editar registro
+    </h2>
+
+    <form [formGroup]="formulario" (ngSubmit)="guardarCambios()">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- NOMBRE COMPLETO -->
+        <div class="md:col-span-2">
+          <label class="block font-medium mb-1">Nombre completo</label>
+          <input
+            type="text"
+            formControlName="nombreCompleto"
+            placeholder="Nombre, apellido paterno y apellido materno"
+            class="w-full border border-gray-300 rounded-lg p-2"
+          >
+        </div>
+
+        <div>
+          <label class="block font-medium mb-1">Edad</label>
+          <input
+            type="number"
+            min="0"
+            step="1"
+            formControlName="edad"
+            class="w-full border border-gray-300 rounded-lg p-2"
+          >
+        </div>
+
+        <!-- SEXO -->
+        <div>
+          <label class="block font-medium mb-2">Sexo</label>
+
+          <div class="flex gap-6 items-center">
+
+            <label class="flex items-center gap-2">
+              <input
+                type="radio"
+                formControlName="sexo"
+                value="Femenino"
+                class="w-4 h-4"
+              >
+              Femenino
+            </label>
+
+            <label class="flex items-center gap-2">
+              <input
+                type="radio"
+                formControlName="sexo"
+                value="Masculino"
+                class="w-4 h-4"
+              >
+              Masculino
+            </label>
+
+          </div>
+        </div>
+
+        <!-- SIGNO ZODIACAL -->
+        <div>
+          <label class="block font-medium mb-1">Signo zodiacal</label>
+          <select
+            formControlName="signo"
+            class="w-full border border-gray-300 rounded-lg p-2"
+          >
+            <option value="">Selecciona un signo</option>
+            <option value="Rata">Rata</option>
+            <option value="Buey">Buey</option>
+            <option value="Tigre">Tigre</option>
+            <option value="Conejo">Conejo</option>
+            <option value="Dragon">Dragón</option>
+            <option value="Serpiente">Serpiente</option>
+            <option value="Caballo">Caballo</option>
+            <option value="Cabra">Cabra</option>
+            <option value="Mono">Mono</option>
+            <option value="Gallo">Gallo</option>
+            <option value="Perro">Perro</option>
+            <option value="Cerdo">Cerdo</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- BOTONES -->
+      <div class="flex flex-wrap gap-3 mt-6">
+
+        <button
+          type="submit"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg"
+        >
+          Guardar cambios
+        </button>
+
+        <button
+          type="button"
+          (click)="cancelarEdicion()"
+          class="bg-gray-500 hover:bg-gray-600 text-white font-medium px-5 py-2 rounded-lg"
+        >
+          Cancelar
+        </button>
+
+      </div>
+
+    </form>
+  </div>
+
+  <!-- TABLA DE REGISTROS -->
+  <div class="overflow-x-auto">
+
+    <table class="w-full border-collapse border border-gray-300">
+
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="border border-gray-300 p-3 text-left">Nombre completo</th>
+          <th class="border border-gray-300 p-3 text-left">Edad</th>
+          <th class="border border-gray-300 p-3 text-left">Sexo</th>
+          <th class="border border-gray-300 p-3 text-left">Signo</th>
+          <th class="border border-gray-300 p-3 text-center">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr
+          *ngFor="let persona of zodiacos; let i = index"
+          class="hover:bg-gray-50"
+        >
+
+          <!-- NOMBRE Y APELLIDOS CONCATENADOS -->
+          <td class="border border-gray-300 p-3 whitespace-nowrap">
+            {{ persona.nombre }} {{ persona.Apaterno }} {{ persona.Amaterno }}
+          </td>
+
+          <td class="border border-gray-300 p-3">
+            {{ persona.edad }}
+          </td>
+
+          <td class="border border-gray-300 p-3">
+            {{ persona.sexo }}
+          </td>
+
+          <td class="border border-gray-300 p-3">
+            {{ persona.signo === 'Dragon' ? 'Dragón' : persona.signo }}
+          </td>
+
+          <!-- ACCIONES -->
+          <td class="border border-gray-300 p-3">
+            <div class="flex justify-center gap-2">
+
+              <button
+                type="button"
+                (click)="editar(i)"
+                class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded-lg"
+              >
+                Editar
+              </button>
+
+              <button
+                type="button"
+                (click)="eliminar(i)"
+                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg"
+              >
+                Eliminar
+              </button>
+
+            </div>
+          </td>
+
+        </tr>
+
+        <!-- CUANDO NO HAY REGISTROS -->
+        <tr *ngIf="zodiacos.length === 0">
+          <td
+            colspan="5"
+            class="border border-gray-300 p-4 text-center text-gray-500"
+          >
+            No hay registros guardados.
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+  </div>
+
+  <!-- VOLVER AL FORMULARIO -->
+  <div class="mt-6">
+    <a
+      routerLink="/formularios/zodiaco"
+      class="inline-block bg-gray-700 hover:bg-gray-800 text-white px-5 py-2 rounded-lg"
+    >
+      Volver al formulario
+    </a>
+  </div>
+
+</div>
